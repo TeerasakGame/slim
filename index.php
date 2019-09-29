@@ -7,7 +7,7 @@ $app = new \Slim\App();
 $app->get('/', function ($request, $response, $args) {
     echo "Welcome to Slim!";
 });
-
+//get all
 $app->get('/user', function ($request,  $response, $args) {
     include 'database.php';
     $sql = "SELECT id, name FROM user";
@@ -20,7 +20,7 @@ $app->get('/user', function ($request,  $response, $args) {
         echo json_encode(false);
     }
 });
-
+// get by id
 $app->get('/user/{id}', function ($request,  $response, $args) {
     include 'database.php';
     $sql = "SELECT id, name FROM user WHERE id = ".$args['id'];
@@ -33,7 +33,7 @@ $app->get('/user/{id}', function ($request,  $response, $args) {
         echo json_encode(false);
     }
 });
-
+//add user
 $app->post('/user', function ($request,  $response, $args) {
     include 'database.php';
     $name = $request->getparam('name');
@@ -44,7 +44,7 @@ $app->post('/user', function ($request,  $response, $args) {
         echo json_encode(false);
     }
 });
-
+//update
 $app->put('/user/{id}', function ($request,  $response, $args) {
     include 'database.php';
     $name = $request->getparam('name');
@@ -56,7 +56,7 @@ $app->put('/user/{id}', function ($request,  $response, $args) {
         echo json_encode(false);
     }
 });
-
+//delete
 $app->delete('/user/{id}', function ($request,  $response, $args) {
     include 'database.php';
     $id = $args['id'];
@@ -67,8 +67,6 @@ $app->delete('/user/{id}', function ($request,  $response, $args) {
         echo json_encode(false);
     }
 });
-
-
 
 $app->run();
 
