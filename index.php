@@ -19,9 +19,9 @@ $app->get('/user', function ($request,  $response, $args) {
         }
         $payload = json_encode($data);
         $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        return $response->withStatus(200);
     } else {
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(204);
+        return $response->withStatus(204);
     }
 });
 // get by id
