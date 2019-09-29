@@ -8,13 +8,67 @@ $app->get('/', function ($request, $response, $args) {
     echo "Welcome to Slim!";
 });
 
-$app->get('/hello/{name}', function ( $request,  $response, $args) {
-    $name = $args['name'];
-    echo "<pre>";
-    print_r($request);
-    print_r($response);
-    echo "Hello, $name";
+$app->get('/user', function ($request,  $response, $args) {
+    include 'database.php';
+    $sql = "SELECT id, name FROM user";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo json_encode($row);
+        }
+    } else {
+        echo json_encode(false);
+    }
 });
+
+$app->get('/user/{id}', function ($request,  $response, $args) {
+    include 'database.php';
+    $sql = "SELECT id, name FROM user WHERE id = ".$args['id'];
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo json_encode($row);
+        }
+    } else {
+        echo json_encode(false);
+    }
+});
+
+$app->post('/user', function ($request,  $response, $args) {
+    include 'database.php';
+    $name = $request->getparam('name');
+    $sql = "INSERT INTO user (name) VALUES ('$name');";
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(true);;
+    } else {
+        echo json_encode(false);
+    }
+});
+
+$app->put('/user/{id}', function ($request,  $response, $args) {
+    include 'database.php';
+    $name = $request->getparam('name');
+    $id = $args['id'];
+    $sql = "UPDATE user SET name='$name' WHERE id= $id";
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(true);;
+    } else {
+        echo json_encode(false);
+    }
+});
+
+$app->delete('/user/{id}', function ($request,  $response, $args) {
+    include 'database.php';
+    $id = $args['id'];
+    $sql = "DELETE FROM user WHERE id=$id";
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(true);;
+    } else {
+        echo json_encode(false);
+    }
+});
+
+
 
 $app->run();
 
